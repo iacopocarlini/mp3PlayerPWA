@@ -27,11 +27,6 @@ body {
     margin: 0;
 }
 
-main * {
-    margin-top: 1vh;
-    margin-bottom: 1vh;
-}
-
 a {
     text-decoration: none;
 }
@@ -50,6 +45,8 @@ a {
 }
 
 .header > .button {
+    width: 2rem;
+    height: 2rem;
     display: grid;
     align-items: center;
     justify-items: center;
@@ -61,8 +58,8 @@ a {
 }
 
 .img-container {
-    height: 38vh;
     margin-top: 2vh;
+    height: 38vh;
 }
 
 .art {
@@ -75,45 +72,51 @@ a {
 }
 
 .info {
+    margin-top: 1vh;
     height: 15vh;
 }
 
 .info h1 {
     width: 100%;
+    height: 70%;
     color: var(--black);
     font-weight: 500;
-    margin-top: 1vh;
-    margin-bottom: 1vh;
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 .info p {
     width: 100%;
+    height: 30%;
+    margin-top: 0px;
+    margin-bottom: 0px;
     font-size: 1.15rem;
     color: var(--prog);
 }
 
 .prog {
-    /*padding: 10px 0;*/
-    height: 5vh;
+    margin-top: 1vh;
+    height: 10vh;
 }
 
 .prog-time {
-    /*padding: 3px 5px;*/
+    height: 80%;
     color: var(--prog);
     font-weight: bold;
     display: flex;
     justify-content: space-between;
     padding-left: 2vw;
+    padding-right: 2vw;
 }
 
 .prog-bar {
     width: 95%;
-    height: 10px;
-    padding: 1px;
+    height: 20%;
     border-radius: 25px;
     background: linear-gradient(145deg, #fbfbfb, #d4d4d4);
     box-shadow:  5px 5px 10px #a5a5a5, 
                 -5px -5px 10px #ffffff;
-
+    padding-left: 2vw;
+    padding-right: 2vw;
 }
 
 .prog-bar-inner {
@@ -123,6 +126,7 @@ a {
 }
 
 .toolbar {
+    margin-top: 3vh;
     height: 20vh;
 }
 
@@ -152,13 +156,19 @@ ul {
 }
 
 .button-sm {
+    width: 2rem;
+    height: 2rem;
     opacity: 0.75;
 }
 
 .button-md {
+    width: 2.5rem;
+    height: 2.5rem;
     opacity: 0.85;
 }
 .button-lg {
+    width: 3.25rem;
+    height: 3.25rem;
     box-shadow: inset 6px 6px 12px #c8c8c8, 
             inset -6px -6px 12px #ffffff
 }
