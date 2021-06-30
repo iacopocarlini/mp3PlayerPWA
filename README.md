@@ -13,3 +13,4 @@ A simple PWA that acts like an mp3 player
 ## LINKS
 
 + https://jsfiddle.net/onigetoc/odquhrc6/ 
++ https://github.com/googlechrome/samples/tree/gh-pages/service-worker/basic
