@@ -13,3 +13,5 @@ A simple PWA that acts like an mp3 player
 ## LINKS
 
 + https://jsfiddle.net/onigetoc/odquhrc6/ 
++ https://web.dev/file-system-access/
++ https://developers.google.com/web/fundamentals/codelabs/offline
