@@ -9,3 +9,7 @@ A simple PWA that acts like an mp3 player
 + caricamento lista brani locale
 + logica gestione progress bar, nome brano e autore JavaScript
 + conversione in PWA
+
+## LINKS
+
++ https://jsfiddle.net/onigetoc/odquhrc6/ 
