@@ -18,4 +18,4 @@ A simple PWA that acts like an mp3 player
 + esempio: https://github.com/GoogleChromeLabs/text-editor/blob/main
 + icons: https://fontawesome.com/v4.7/icons/
 + https://whatpwacando.today/
-+ VEDERE: https://daviddalbusco.medium.com/take-photo-and-access-the-picture-library-in-your-pwa-without-plugins-876dc92989b
++ VEDERE: https://github.com/WICG/file-system-access/issues/247
