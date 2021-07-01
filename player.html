@@ -1,23 +1,26 @@
 <!-- ref: https://codepen.io/TutulDevs/pen/eYZJmBL -->
 <!DOCTYPE html>
+
 <html>
+    
     <head>
         <link rel="stylesheet" href="style.css">
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <script src="controller.js"></script>
         <script src="sw.js"></script>
     </head>
+
 <body>
 
 <div class="player">
 
     <div id="sidenav" class="sidenav">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="#" onclick="openDirectory()">Open</a>
-        <a href="#">Services</a>
-        <a href="#">Clients</a>
-        <a href="#">Contact</a>
+        <ul id="songsList">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <li id="empty_message" class="song_element"> No songs loaded yet </li>
+        </ul>
     </div>
+
 
     <div class="header">
 
@@ -25,8 +28,11 @@
             <i class="fas fa-bars" aria-hidden="true" onclick="openNav()"></i>
             <span class="sr-only" >menu bar</span>
         </a>
-
-        <p>Now Playing</p>
+        
+        <a href="#" class="button">
+            <i class="fa fa-folder-open" aria-hidden="true" onclick="openDirectory()"></i>
+            <span class="sr-only">Import</span>
+        </a>
 
         <a href="#" class="button">
             <i class="fas fa-search" aria-hidden="true"></i>
@@ -35,19 +41,24 @@
         
     </div> <!--  header  -->
     
+    
     <div class="img-container"> 
         <img src="https://www.buttonmuseum.org/sites/default/files/MU-a-hard-days-night-button_busy_beaver_button_museum.png" alt="album art" class="art">
     </div> <!--  song img  -->
+
 
     <div class="info">
         <h1>The Beatles</h1>
         <p>Elanor Rigby</p>
     </div> <!--  info  -->
     
+
     <div class="prog">
-       <audio controls id="audio_player"></audio>
+       <audio controls id="audio_player">
+       </audio>
     </div><!--  progress  -->
    
+
     <div class="toolbar">
         <ul class="buttons">
             <a href="#" class="button button-sm">
