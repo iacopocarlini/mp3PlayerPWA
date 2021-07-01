@@ -17,3 +17,4 @@ A simple PWA that acts like an mp3 player
 + https://developers.google.com/web/fundamentals/codelabs/offline
 + esempio: https://github.com/GoogleChromeLabs/text-editor/blob/main
 + icons: https://fontawesome.com/v4.7/icons/
++ https://whatpwacando.today/
