@@ -25,10 +25,28 @@ class Song {
 
 // End of class definitions
 
+
+// Window controller
+
+// Globals
+
 var _this = this;
 const audioFileFormats = new Set(["mp3","opus","flac","vorbis","wma", "aac", "wav"]);
 var dirHandle;
 var fileList;
+const ctx = new window.AudioContext();
+
+window.addEventListener('click', () => {
+  ctx.resume().then(() => {
+    console.log('AudioContext started');
+  });
+}, {
+  once: true,
+  capture: true,
+  passive: true,
+});
+
+// End of globals
 
 // Side navigation menu
 
@@ -77,19 +95,12 @@ async function buildFileList(dirHandle) {
 
   let files = [];
 
-  debugger;
-
   for await (const entry of dirHandle.values()) {
     //console.log(entry.kind, entry.name);
     //console.log(entry);
     if (audioFileFormats.has(getFileExtension(entry.name)))
     { 
-      const file = await entry.getFile();
-      files.push(file);
-      var stream = await file.stream();
-      var reader = await stream.getReader().read();
-      // https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream/getReader
-      console.log('ciao');
+      files.push(entry);
     }
   }
 
@@ -147,10 +158,12 @@ function prepareSongItem(songName) {
 
 function playTest() {
 
-  var audioPlayer = document.getElementById('audio_player');
+  /*var audioPlayer = document.getElementById('audio_player');
 
   audioPlayer.src = "C:\\Users\\cariac\\Music\\brani\\1.mp3"; 
-  audioPlayer.play();
+  audioPlayer.play();*/
+
+  playAudio(fileList[0]);
 }
 
 // Audio player controls
@@ -160,10 +173,24 @@ function playSong(songName) {
   var audioPlayer = document.getElementById('audio_player');
 
   var source = document.getElementById('audio_source');
-  source.src = songName;
+  //source.src = songName;
 
   //audioPlayer.load();
   audioPlayer.play();
+}
+
+async function playAudio (fileHandle) {
+
+  debugger;
+  const file = await fileHandle.getFile();
+  const arrayBuffer = await file.arrayBuffer();
+  const decodedBuffer = await ctx.decodeAudioData(arrayBuffer);
+
+  // Create source node
+  const source = ctx.createBufferSource();
+  source.buffer = decodedBuffer;
+  source.connect(ctx.destination);
+  source.start(); 
 }
 
 function pauseSong() {
