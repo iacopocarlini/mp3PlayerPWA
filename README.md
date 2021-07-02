@@ -3,6 +3,7 @@ A simple PWA that acts like an mp3 player
 
 ## TODO
 
++ passaggio automatico alla canzone successiva
 + barra di ricerca
 + conversione in PWA
 + Tema chiaro / scuro
