@@ -121,6 +121,10 @@ color: #f1f1f1;
     margin-bottom: 0px;
     font-size: 1.15rem;
     color: var(--prog);
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .prog {

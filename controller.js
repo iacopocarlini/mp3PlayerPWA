@@ -1,40 +1,24 @@
-// Class definitions
+console.clear();
 
-class Song {
-
-  constructor(name, filepath) {
-    this.name = name;
-    //this.artist = artist;
-    this.filepath = filepath;
-  }
-
-  // Getters
-  get name() {
-    return this.name;
-  }
-
-  get filepath() {
-    return this.filepath;
-  }
-
-
-  // Methods
-
-}
-
-
-// End of class definitions
-
-
-// Window controller
-
-// Globals
+// GLOBALS
 
 var _this = this;
+
 const audioFileFormats = new Set(["mp3","opus","flac","vorbis","wma", "aac", "wav"]);
 var dirHandle;
-var fileList;
+var playList;
+
+var currentIndex = 0;
+
+var isPlaying = false;
+
+// audio context and source
+const AudioContext = window.AudioContext || window.webkitAudioContext;
 const ctx = new window.AudioContext();
+var currentSource;
+
+
+// DOM setup
 
 window.addEventListener('click', () => {
   ctx.resume().then(() => {
@@ -46,16 +30,31 @@ window.addEventListener('click', () => {
   passive: true,
 });
 
+var sidenavIsOpen = false;
+document.addEventListener('click', function(event) {
+  
+  if (!(document.getElementById("sidenav").contains(event.target)) 
+      && !(document.getElementById("menu_btn").contains(event.target)) 
+      && sidenavIsOpen)
+    closeNav();
+});
+
 // End of globals
+
+
+// WINDOW MANAGEMENT
+
 
 // Side navigation menu
 
 function openNav() {
     document.getElementById("sidenav").style.width = "70vw";
+    sidenavIsOpen = true;
 }
   
 function closeNav() {
     document.getElementById("sidenav").style.width = "0";
+    sidenavIsOpen = false;
 }
 
 // End side navigation menu
@@ -74,14 +73,14 @@ async function openDirectory() {
       return;
     }
 
-    fileList = await buildFileList(dirHandle);
+    playList = await buildPlayList(dirHandle);
 
-    if (fileList.length === 0) {
+    if (playList.length === 0) {
       alert("No audio files found in this folder");
       return;
     }
 
-    populateSongList(fileList);
+    populatePlayList(playList);
   }
   catch (error) {
     //alert("Error during playlist loading, try again");
@@ -91,17 +90,14 @@ async function openDirectory() {
 }
 
 
-async function buildFileList(dirHandle) {
+async function buildPlayList(dirHandle) {
 
   let files = [];
 
   for await (const entry of dirHandle.values()) {
-    //console.log(entry.kind, entry.name);
-    //console.log(entry);
+    //console.log(entry.kind, entry.name); console.log(entry);
     if (audioFileFormats.has(getFileExtension(entry.name)))
-    { 
       files.push(entry);
-    }
   }
 
   return files;
@@ -123,7 +119,7 @@ function getSongName(filepath) {
 }
 
 
-function populateSongList(songsArray) {
+function populatePlayList(songsArray) {
 
   // hide default message
   document.getElementById('empty_message').style.display = "none";
@@ -133,7 +129,7 @@ function populateSongList(songsArray) {
 
   for (var i = 0; i < songsArray.length; i++) {
 
-    var item = prepareSongItem(songsArray[i].name);
+    var item = prepareSongItem(songsArray[i].name, i);
     list.appendChild(item);
   }
 
@@ -143,14 +139,15 @@ function populateSongList(songsArray) {
 }
 
 
-function prepareSongItem(songName) {
+function prepareSongItem(songName, index) {
 
   var item = document.createElement('li');
 
   item.appendChild(document.createTextNode(songName));
   item.setAttribute("class", "song_element");
   item.addEventListener('click', function(){
-    playSong(songName);
+    playSong(index);
+    closeNav();
 });
 
   return item;
@@ -163,49 +160,107 @@ function playTest() {
   audioPlayer.src = "C:\\Users\\cariac\\Music\\brani\\1.mp3"; 
   audioPlayer.play();*/
 
-  playAudio(fileList[0]);
+  playSong(0);
 }
 
 // Audio player controls
 
-function playSong(songName) {
+async function playSong(index) {
 
-  var audioPlayer = document.getElementById('audio_player');
+  togglePlayPauseIcon("toPause");
 
-  var source = document.getElementById('audio_source');
-  //source.src = songName;
+  if (isPlaying) // stop pre-existing song
+    currentSource.stop();
 
-  //audioPlayer.load();
-  audioPlayer.play();
-}
+  const fileHandle = playList[index];
 
-async function playAudio (fileHandle) {
-
-  debugger;
   const file = await fileHandle.getFile();
   const arrayBuffer = await file.arrayBuffer();
   const decodedBuffer = await ctx.decodeAudioData(arrayBuffer);
 
-  // Create source node
-  const source = ctx.createBufferSource();
-  source.buffer = decodedBuffer;
-  source.connect(ctx.destination);
-  source.start(); 
+  audioSourceSetup(decodedBuffer);
+  updatePlaylistStatus(index);
 }
 
-function pauseSong() {
+function audioSourceSetup(decodedBuffer) {
 
+  currentSource = ctx.createBufferSource();
+  /*currentSource.onended = function() {
+    console.log("ciao");
+    currentSource.stop();
+    nextSong(); // TODO: implementare passaggio automatico a canzone successiva
+  }*/
+  currentSource.buffer = decodedBuffer;
+  currentSource.connect(ctx.destination);
+  currentSource.start();
+}
+
+function updatePlaylistStatus(index) {
+
+  currentIndex = index;
+  
+  const fileHandle = playList[index];
+  document.getElementById("song_header").innerHTML = "Now playing";
+  document.getElementById("song_title").innerHTML = fileHandle.name;
+
+  isPlaying = true;
+}
+
+function playPauseClick() {
+
+  if(ctx.state === 'running') {
+    ctx.suspend().then(function() {
+      isPlaying = false;
+      togglePlayPauseIcon("toPause");
+    });
+  } else if(ctx.state === 'suspended') {
+    ctx.resume().then(function() {
+      isPlaying = true;
+      togglePlayPauseIcon("toPlay");
+    });  
+  }
+}
+
+
+function togglePlayPauseIcon(mode) {
+
+    var el = document.getElementById("play_pause_icon");
+
+    if (mode == "toPause") {
+      el.classList.remove('fa-play');
+      el.classList.add('fa-pause');
+    }
+    else if (mode == "toPlay") {
+      el.classList.remove('fa-pause');
+      el.classList.add('fa-play');
+    }
+    else 
+      return;
 }
 
 function previousSong() {
 
+  currentIndex = currentIndex - 1;
+
+  if (currentIndex < 0)
+    currentIndex = playList.length -1;
+
+  playSong(currentIndex);
 }
 
 function nextSong() {
 
+  currentIndex = currentIndex +1;
+  
+  if (currentIndex >= playList.length)
+    currentIndex = 0;
+
+  playSong(currentIndex);
 }
 
+function shuffleSong() {
 
+}
 
 // Request permiissions
 async function verifyPermission(dirHandle, readWrite) {

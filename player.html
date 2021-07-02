@@ -1,4 +1,6 @@
-<!-- ref: https://codepen.io/TutulDevs/pen/eYZJmBL -->
+<!-- ref: https://codepen.io/TutulDevs/pen/eYZJmBL 
+          https://codepen.io/Rumyra/pen/qyMzqN/   -->
+
 <!DOCTYPE html>
 
 <html>
@@ -6,8 +8,6 @@
     <head>
         <link rel="stylesheet" href="style.css">
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <script src="controller.js"></script>
-        <script src="sw.js"></script>
     </head>
 
 <body>
@@ -25,7 +25,7 @@
     <div class="header">
 
         <a href="#" class="button">
-            <i class="fas fa-bars" aria-hidden="true" onclick="openNav()"></i>
+            <i id="menu_btn" class="fas fa-bars" aria-hidden="true" onclick="openNav()"></i>
             <span class="sr-only" >menu bar</span>
         </a>
         
@@ -43,37 +43,36 @@
     
     
     <div class="img-container"> 
-        <img src="https://www.buttonmuseum.org/sites/default/files/MU-a-hard-days-night-button_busy_beaver_button_museum.png" alt="album art" class="art">
+        <img src="img/central_512px.png" alt="Playing" class="art">
     </div> <!--  song img  -->
 
 
     <div class="info">
-        <h1>The Beatles</h1>
-        <p>Elanor Rigby</p>
+        <h1 id="song_header"> </h1>
+        <p id="song_title"> Press on the folder button to load <br> your playlist</p>
     </div> <!--  info  -->
     
 
     <div class="prog">
-       <audio controls id="audio_player">
-       </audio>
+       <audio controls id="audio_player"></audio>
     </div><!--  progress  -->
    
 
     <div class="toolbar">
         <ul class="buttons">
             <a href="#" class="button button-sm">
-                <i class="fas fa-random fa-sm" aria-hidden="true"></i>
+                <i class="fas fa-random fa-sm" aria-hidden="true" onclick="shuffleSong()"></i>
                 <span class="sr-only">Shuffle</span>
             </a>
             <a href="#" class="button button-md">
-                <i class="fas fa-step-backward" aria-hidden="true"></i>
+                <i class="fas fa-step-backward" aria-hidden="true" onclick="previousSong()"></i>
                 <span class="sr-only">Previous Music</span>
             </a>
-            <a href="#" class="button button-lg">
-                <i class="fas fa-pause fa-lg" aria-hidden="true" aria-hidden="true"></i>
+            <a id="play_pause_button" href="#" class="button button-lg" onclick="playPauseClick()">
+                <i id="play_pause_icon" class="fas fa-play fa-lg" aria-hidden="true" aria-hidden="true"></i>
                 <span class="sr-only">Pause</span>
             </a>
-            <a href="#" class="button button-md">
+            <a href="#" class="button button-md" onclick="nextSong()">
                 <i class="fas fa-step-forward"></i>
                 <span class="sr-only">Next Music</span>
             </a>
@@ -90,4 +89,7 @@
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
 
 </body>
+
+<script src="controller.js"></script>
+<script src="sw.js"></script>
 </html>
