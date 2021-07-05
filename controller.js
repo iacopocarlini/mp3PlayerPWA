@@ -11,11 +11,13 @@ var playList;
 var currentIndex = 0;
 
 var isPlaying = false;
+var titleIsMoving = false;
 
 // audio context and source
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 const ctx = new window.AudioContext();
 var currentSource;
+var currentSourceDuration = 0;
 
 
 // DOM setup
@@ -191,32 +193,68 @@ function audioSourceSetup(decodedBuffer) {
     nextSong(); // TODO: implementare passaggio automatico a canzone successiva
   }*/
   currentSource.buffer = decodedBuffer;
+  currentSourceDuration = decodedBuffer.duration;
   currentSource.connect(ctx.destination);
   currentSource.start();
+
+}
+
+function secondsToRegularTime(inputSeconds) {
+
+  var mins = Math.floor(inputSeconds / 60);
+
+  return {
+    minutes: mins,
+    seconds: inputSeconds - mins * 60,
+  };  
 }
 
 function updatePlaylistStatus(index) {
 
   currentIndex = index;
   
-  const fileHandle = playList[index];
   document.getElementById("song_header").innerHTML = "Now playing";
-  document.getElementById("song_title").innerHTML = fileHandle.name;
+  document.getElementById("song_header").style.display = "block";
+  
+  document.getElementById("song_title").innerHTML = cleanSongName(playList[index].name);
+
+  // TODO: mettere label minuti correnti e finale
+  
+  moveTitle();
 
   isPlaying = true;
 }
 
+function cleanSongName(filename) {
+
+  return filename.replace(/\.[^/.]+$/, "");
+}
+
+function moveTitle() {
+
+  if (!titleIsMoving) {
+    var el = document.getElementById("song_title");
+    el.classList.add('moving');
+    titleIsMoving = true;
+  }
+  else
+    return;
+}
+
 function playPauseClick() {
+
+  if (!playList)
+    return
 
   if(ctx.state === 'running') {
     ctx.suspend().then(function() {
       isPlaying = false;
-      togglePlayPauseIcon("toPause");
+      togglePlayPauseIcon("toPlay");
     });
   } else if(ctx.state === 'suspended') {
     ctx.resume().then(function() {
       isPlaying = true;
-      togglePlayPauseIcon("toPlay");
+      togglePlayPauseIcon("toPause");
     });  
   }
 }
@@ -240,6 +278,9 @@ function togglePlayPauseIcon(mode) {
 
 function previousSong() {
 
+  if (!playList)
+    return
+
   currentIndex = currentIndex - 1;
 
   if (currentIndex < 0)
@@ -250,6 +291,9 @@ function previousSong() {
 
 function nextSong() {
 
+  if (!playList)
+    return
+
   currentIndex = currentIndex +1;
   
   if (currentIndex >= playList.length)
@@ -259,7 +303,9 @@ function nextSong() {
 }
 
 function shuffleSong() {
-
+  
+  if (!playList)
+    return
 }
 
 // Request permiissions

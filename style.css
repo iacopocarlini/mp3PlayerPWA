@@ -116,15 +116,49 @@ color: #f1f1f1;
     margin-bottom: 0px;
 }
 .info p {
-    height: 30%;
+    height: 80%;
     margin-top: 0px;
     margin-bottom: 0px;
     font-size: 1.15rem;
     color: var(--prog);
+}
 
+.moving {
+
+    height: 30%;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    /* animation */
+    /* Starting position */
+    -moz-transform:translateX(100%);
+    -webkit-transform:translateX(100%);  
+    transform:translateX(100%);
+
+    /* Apply animation to this element */  
+    -moz-animation: example1 15s linear infinite;
+    -webkit-animation: example1 15s linear infinite;
+    animation: example1 15s linear infinite;
+}
+
+/* Move it (define the animation) */
+@-moz-keyframes example1 {
+    0%   { -moz-transform: translateX(100%); }
+    100% { -moz-transform: translateX(-100%); }
+}
+@-webkit-keyframes example1 {
+    0%   { -webkit-transform: translateX(100%); }
+    100% { -webkit-transform: translateX(-100%); }
+}
+@keyframes example1 {
+    0%   { 
+        -moz-transform: translateX(100%); /* Firefox bug fix */
+        -webkit-transform: translateX(100%); /* Firefox bug fix */
+        transform: translateX(100%);     
+    }
+    100% { 
+        -moz-transform: translateX(-100%); /* Firefox bug fix */
+        -webkit-transform: translateX(-100%); /* Firefox bug fix */
+        transform: translateX(-100%); 
+    }
 }
 
 .prog {
