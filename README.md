@@ -11,11 +11,8 @@ A simple PWA that acts like an mp3 player
 
 ## LINKS
 
-+ https://jsfiddle.net/onigetoc/odquhrc6/ 
-+ https://web.dev/file-system-access/
+
 + https://developers.google.com/web/fundamentals/codelabs/offline
-+ esempio: https://github.com/GoogleChromeLabs/text-editor/blob/main
 + icons: https://fontawesome.com/v4.7/icons/
 + https://whatpwacando.today/
-+ VEDERE: https://github.com/WICG/file-system-access/issues/247
-+ controllo volume: https://webaudioapi.com/samples/volume/
++ provare implementazione con interazione fra WebAudio API e audio tag HTML5
