@@ -5,21 +5,32 @@ console.clear();
 var _this = this;
 
 const audioFileFormats = new Set(["mp3","opus","flac","vorbis","wma", "aac", "wav"]);
-var playList = [];
+var dirHandle;
+var playList;
 
 var currentIndex = 0;
-var isLoopActive = false;
+
+var isPlaying = false;
 var titleIsMoving = false;
 
-// DOM Elements
-var audioElement = new Audio();
-audioElement.addEventListener("ended", nextSong);
-audioElement.addEventListener("timeupdate", updateTimer);
-
-var inputElement = document.getElementById("input_picker");
+// audio context and source
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+const ctx = new window.AudioContext();
+var currentSource;
+var currentSourceDuration = 0;
 
 
 // DOM setup
+
+window.addEventListener('click', () => {
+  ctx.resume().then(() => {
+    console.log('AudioContext started');
+  });
+}, {
+  once: true,
+  capture: true,
+  passive: true,
+});
 
 var sidenavIsOpen = false;
 document.addEventListener('click', function(event) {
@@ -31,6 +42,10 @@ document.addEventListener('click', function(event) {
 });
 
 // End of globals
+
+
+// WINDOW MANAGEMENT
+
 
 // Side navigation menu
 
@@ -48,24 +63,46 @@ function closeNav() {
 
 
 // File browsing
-function openDirectory() {
-  inputElement.click();
+async function openDirectory() {
+
+  try {
+
+    dirHandle = await window.showDirectoryPicker({ startIn: 'music' });
+
+    var permissionGranted = await verifyPermission(dirHandle, true);
+    if (!permissionGranted) {
+      alert("Permission needed");
+      return;
+    }
+
+    playList = await buildPlayList(dirHandle);
+
+    if (playList.length === 0) {
+      alert("No audio files found in this folder");
+      return;
+    }
+
+    populatePlayList(playList);
+  }
+  catch (error) {
+    //alert("Error during playlist loading, try again");
+    alert(error);
+  }
+
 }
 
 
-function buildPlayList() {
+async function buildPlayList(dirHandle) {
 
-  for (var i = 0; i < inputElement.files.length; i++) {
-    if (audioFileFormats.has(getFileExtension(inputElement.files[i].name)))
-      playList.push(inputElement.files[i]);
+  let files = [];
+
+  for await (const entry of dirHandle.values()) {
+    //console.log(entry.kind, entry.name); console.log(entry);
+    if (audioFileFormats.has(getFileExtension(entry.name)))
+      files.push(entry);
   }
 
-  if (playList.length === 0) {
-    alert("No audio files found in this folder");
-    return;
-  }
-
-  populatePlayListView(playList);
+  return files;
 }
 
 function getFileExtension(filename) {
@@ -74,8 +111,17 @@ function getFileExtension(filename) {
   return extension.toLowerCase();
 }
 
+function getSongName(filepath) {
 
-function populatePlayListView(songsArray) {
+  var songName = filepath;
+
+  // ...
+
+  return songName;
+}
+
+
+function populatePlayList(songsArray) {
 
   // hide default message
   document.getElementById('empty_message').style.display = "none";
@@ -84,9 +130,12 @@ function populatePlayListView(songsArray) {
   var list = document.getElementById('songsList');
 
   for (var i = 0; i < songsArray.length; i++) {
+
     var item = prepareSongItem(songsArray[i].name, i);
     list.appendChild(item);
   }
+
+  // ...
 
   openNav(); // show results
 }
@@ -106,32 +155,57 @@ function prepareSongItem(songName, index) {
   return item;
 }
 
+function playTest() {
+
+  /*var audioPlayer = document.getElementById('audio_player');
+
+  audioPlayer.src = "C:\\Users\\cariac\\Music\\brani\\1.mp3"; 
+  audioPlayer.play();*/
+
+  playSong(0);
+}
+
 // Audio player controls
 
-function playSong(index) {
+async function playSong(index) {
 
   togglePlayPauseIcon("toPause");
 
-  audioElement.src = URL.createObjectURL(playList[index]);
-  audioElement.play();
+  if (isPlaying) // stop pre-existing song
+    currentSource.stop();
 
+  const fileHandle = playList[index];
+
+  const file = await fileHandle.getFile();
+  const arrayBuffer = await file.arrayBuffer();
+  const decodedBuffer = await ctx.decodeAudioData(arrayBuffer);
+
+  audioSourceSetup(decodedBuffer);
   updatePlaylistStatus(index);
 }
 
-function secondsToRegularTime(inputSeconds) { // format MM:SS
+function audioSourceSetup(decodedBuffer) {
 
-  var mins = Math.floor(inputSeconds / 60).toString();
-  var secs =  Math.floor(inputSeconds - mins * 60).toString();
+  currentSource = ctx.createBufferSource();
+  /*currentSource.onended = function() {
+    console.log("ciao");
+    currentSource.stop();
+    nextSong(); // TODO: implementare passaggio automatico a canzone successiva
+  }*/
+  currentSource.buffer = decodedBuffer;
+  currentSourceDuration = decodedBuffer.duration;
+  currentSource.connect(ctx.destination);
+  currentSource.start();
 
-  if (mins.length == 1) // 0 padding needed
-    mins = '0' + mins;
+}
 
-  if (secs.length == 1) // 0 padding needed
-    secs = '0' + secs;
+function secondsToRegularTime(inputSeconds) {
+
+  var mins = Math.floor(inputSeconds / 60);
 
   return {
     minutes: mins,
-    seconds: secs,
+    seconds: inputSeconds - mins * 60,
   };  
 }
 
@@ -143,22 +217,22 @@ function updatePlaylistStatus(index) {
   document.getElementById("song_header").style.display = "block";
   
   document.getElementById("song_title").innerHTML = cleanSongName(playList[index].name);
+
+  updateSongDuration();
   
   moveTitle();
+
+  isPlaying = true;
 }
 
-function updateTimer() {
+function updateSongDuration() {
 
-  var playtime = secondsToRegularTime(audioElement.currentTime);
-  document.getElementById("left_time").innerHTML = playtime.minutes + ":" + playtime.seconds;
-
-  var endtime = secondsToRegularTime(audioElement.duration);
-  document.getElementById("right_time").innerHTML = endtime.minutes + ":" + endtime.seconds;
-
+  var time = secondsToRegularTime(currentSourceDuration);
+  document.getElementById("right_time").innerHTML = time.minutes + ":" + time.seconds;
 }
-
 
 function cleanSongName(filename) {
+
   return filename.replace(/\.[^/.]+$/, "");
 }
 
@@ -178,16 +252,17 @@ function playPauseClick() {
   if (!playList)
     return
 
-  if (!audioElement.paused) {
-    audioElement.pause();
-    togglePlayPauseIcon("toPlay");
-  } 
-  else if(audioElement.paused) {
-    audioElement.play();
-    togglePlayPauseIcon("toPause");
+  if(ctx.state === 'running') {
+    ctx.suspend().then(function() {
+      isPlaying = false;
+      togglePlayPauseIcon("toPlay");
+    });
+  } else if(ctx.state === 'suspended') {
+    ctx.resume().then(function() {
+      isPlaying = true;
+      togglePlayPauseIcon("toPause");
+    });  
   }
-  else
-    return;
 }
 
 
@@ -212,10 +287,7 @@ function previousSong() {
   if (!playList)
     return
 
-  audioElement.currentTime = 0;
-
-  if (!isLoopActive)
-    currentIndex = currentIndex - 1;
+  currentIndex = currentIndex - 1;
 
   if (currentIndex < 0)
     currentIndex = playList.length -1;
@@ -228,10 +300,7 @@ function nextSong() {
   if (!playList)
     return
 
-  audioElement.currentTime = 0;
-
-  if (!isLoopActive)
-    currentIndex = currentIndex +1;
+  currentIndex = currentIndex +1;
   
   if (currentIndex >= playList.length)
     currentIndex = 0;
@@ -244,8 +313,7 @@ function shuffleSong() {
   if (!playList)
     return;
 
-  var randomIndex = Math.floor(Math.random() * playList.length);
-  playSong(randomIndex);
+  playSong(Math.floor(Math.random() * playList.length));
 }
 
 function loop() {
@@ -253,10 +321,7 @@ function loop() {
   if (!playList)
     return;
 
-  isLoopActive = !isLoopActive;
-
-  // TODO colorare icona per far capire che il loop è attivo
-
+  playSong(currentIndex);
 }
 
 // Request permiissions
@@ -277,11 +342,4 @@ async function verifyPermission(dirHandle, readWrite) {
   }
   // The user didn't grant permission
   return false;
-}
-
-
-// Test functions
-
-function playTest() {
-  playSong(0);
 }

@@ -3,7 +3,7 @@ A simple PWA that acts like an mp3 player
 
 ## TODO
 
-+ passaggio automatico alla canzone successiva
++ progress bar e controllo volume (muto e non)
 + barra di ricerca
 + conversione in PWA
 + Tema chiaro / scuro
@@ -11,8 +11,8 @@ A simple PWA that acts like an mp3 player
 
 ## LINKS
 
-
 + https://developers.google.com/web/fundamentals/codelabs/offline
 + icons: https://fontawesome.com/v4.7/icons/
 + https://whatpwacando.today/
-+ provare implementazione con interazione fra WebAudio API e audio tag HTML5
++ refactoring per nuova implementazione audio tag
++ restyling tag audio 

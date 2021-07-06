@@ -127,6 +127,7 @@ color: #f1f1f1;
 
     height: 30%;
     white-space: nowrap;
+
     /* animation */
     /* Starting position */
     -moz-transform:translateX(100%);
@@ -164,8 +165,49 @@ color: #f1f1f1;
 .prog {
     margin-top: 3vh;
     height: 10vh;
+    /*display: grid;
+    place-items: center;*/
+}
+
+.progress-bar-container {
     display: grid;
     place-items: center;
+}
+
+.prog-time {
+    padding: 3px 5px;
+    color: var(--prog);
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+}
+
+.prog-time > p {
+    font-size: 0.65rem;
+}
+
+#left_time {
+    padding-left: 20px;
+}
+
+#right_time {
+    padding-right: 20px;
+}
+
+.prog-bar {
+
+    width: 90%;
+    height: 15px;
+    border-radius: 25px;
+    background: linear-gradient(145deg, #fbfbfb, #d4d4d4);
+    box-shadow:  5px 5px 10px #a5a5a5, 
+                -5px -5px 10px #ffffff;
+}
+
+.prog-bar-inner {
+    height: 8px;
+    background: var(--prog);
+    border-radius: 25px;
 }
 
 #audio_player {
