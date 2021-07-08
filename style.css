@@ -194,7 +194,7 @@ color: #f1f1f1;
     padding-right: 20px;
 }
 
-.prog-bar {
+#seekbar {
 
     width: 90%;
     height: 15px;
@@ -204,7 +204,7 @@ color: #f1f1f1;
                 -5px -5px 10px #ffffff;
 }
 
-.prog-bar-inner {
+#seekbar-inner {
     height: 8px;
     background: var(--prog);
     border-radius: 25px;

@@ -1,4 +1,4 @@
-console.clear();
+console.clear(); // debug util
 
 // GLOBALS
 
@@ -15,8 +15,11 @@ var titleIsMoving = false;
 var audioElement = new Audio();
 audioElement.addEventListener("ended", nextSong);
 audioElement.addEventListener("timeupdate", updateTimer);
+audioElement.addEventListener("loadedmetadata", updatePlaylistStatus);
 
 var inputElement = document.getElementById("input_picker");
+var seekbar =  document.getElementById("seekbar");
+seekbar.addEventListener("onchange", nextSong);
 
 
 // DOM setup
@@ -55,6 +58,9 @@ function openDirectory() {
 
 function buildPlayList() {
 
+  if (playListReady()) // erase pre existing playlist
+    playList = [];
+    
   for (var i = 0; i < inputElement.files.length; i++) {
     if (audioFileFormats.has(getFileExtension(inputElement.files[i].name)))
       playList.push(inputElement.files[i]);
@@ -88,7 +94,7 @@ function populatePlayListView(songsArray) {
     list.appendChild(item);
   }
 
-  openNav(); // show results
+  openNav(); // show results in sidebar
 }
 
 
@@ -115,7 +121,7 @@ function playSong(index) {
   audioElement.src = URL.createObjectURL(playList[index]);
   audioElement.play();
 
-  updatePlaylistStatus(index);
+  currentIndex = index;
 }
 
 function secondsToRegularTime(inputSeconds) { // format MM:SS
@@ -135,14 +141,16 @@ function secondsToRegularTime(inputSeconds) { // format MM:SS
   };  
 }
 
-function updatePlaylistStatus(index) {
+function updatePlaylistStatus() {
 
-  currentIndex = index;
-  
+  // Title
   document.getElementById("song_header").innerHTML = "Now playing";
   document.getElementById("song_header").style.display = "block";
   
-  document.getElementById("song_title").innerHTML = cleanSongName(playList[index].name);
+  document.getElementById("song_title").innerHTML = cleanSongName(playList[currentIndex].name);
+
+  // Song time 
+  seekbar.max = audioElement.duration;
   
   moveTitle();
 }
@@ -155,11 +163,18 @@ function updateTimer() {
   var endtime = secondsToRegularTime(audioElement.duration);
   document.getElementById("right_time").innerHTML = endtime.minutes + ":" + endtime.seconds;
 
+  seekbar.value = audioElement.currentTime;
 }
 
 
 function cleanSongName(filename) {
   return filename.replace(/\.[^/.]+$/, "");
+}
+
+
+function goToSelectedTime() {
+
+  audioElement.currentTime = seekbar.value;
 }
 
 function moveTitle() {
@@ -175,8 +190,8 @@ function moveTitle() {
 
 function playPauseClick() {
 
-  if (!playList)
-    return
+  if (!playListReady())
+    return;
 
   if (!audioElement.paused) {
     audioElement.pause();
@@ -209,8 +224,8 @@ function togglePlayPauseIcon(mode) {
 
 function previousSong() {
 
-  if (!playList)
-    return
+  if (!playListReady())
+    return;
 
   audioElement.currentTime = 0;
 
@@ -218,15 +233,15 @@ function previousSong() {
     currentIndex = currentIndex - 1;
 
   if (currentIndex < 0)
-    currentIndex = playList.length -1;
+    currentIndex = playList.length - 1;
 
   playSong(currentIndex);
 }
 
 function nextSong() {
 
-  if (!playList)
-    return
+  if (!playListReady())
+    return;
 
   audioElement.currentTime = 0;
 
@@ -241,7 +256,7 @@ function nextSong() {
 
 function shuffleSong() {
   
-  if (!playList)
+  if (!playListReady())
     return;
 
   var randomIndex = Math.floor(Math.random() * playList.length);
@@ -250,13 +265,18 @@ function shuffleSong() {
 
 function loop() {
 
-  if (!playList)
+  if (!playListReady())
     return;
 
   isLoopActive = !isLoopActive;
 
   // TODO colorare icona per far capire che il loop è attivo
 
+}
+
+function playListReady() {
+
+  return playList.length != 0;
 }
 
 // Request permiissions
@@ -281,7 +301,6 @@ async function verifyPermission(dirHandle, readWrite) {
 
 
 // Test functions
-
 function playTest() {
   playSong(0);
 }
