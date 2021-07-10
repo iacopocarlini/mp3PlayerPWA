@@ -112,6 +112,14 @@ function prepareSongItem(songName, index) {
   return item;
 }
 
+
+// Search bar
+
+function search() {
+
+  // ...
+}
+
 // Audio player controls
 
 function playSong(index) {
@@ -269,9 +277,18 @@ function loop() {
     return;
 
   isLoopActive = !isLoopActive;
+  
+  if (isLoopActive)
+    changeButtonColor('loop_btn', getComputedStyle(document.documentElement).getPropertyValue('--blue'));
+  else
+    changeButtonColor('loop_btn', getComputedStyle(document.documentElement).getPropertyValue('--black'));
+}
 
-  // TODO colorare icona per far capire che il loop è attivo
+// show if state button (e.g. loop) is active or not
+function changeButtonColor(buttonID, color) {
 
+    var el = document.getElementById(buttonID);
+    el.style.color = color;
 }
 
 function playListReady() {
@@ -295,12 +312,14 @@ async function verifyPermission(dirHandle, readWrite) {
   if ((await dirHandle.requestPermission(options)) === 'granted') {
     return true;
   }
+
   // The user didn't grant permission
   return false;
 }
 
 
-// Test functions
+// TEST FUNCTIONS
+
 function playTest() {
   playSong(0);
 }

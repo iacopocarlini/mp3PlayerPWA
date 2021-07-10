@@ -5,6 +5,7 @@
     font-family: 'Roboto', sans-serif;
     --bg: #EBEBEB;
     --black: #333333;
+    --blue:  #0075ff;
     --prog: #A4B7BE;
     --sidemenubg: #959595;
 }
@@ -83,7 +84,7 @@ color: #f1f1f1;
     display: grid;
     align-items: center;
     justify-items: center;
-    color: var(--black);
+    /*color: var(--black);*/
     background: linear-gradient(145deg, #fbfbfb, #d4d4d4);
     box-shadow:  4px 4px 7px #cccccc, 
                  -4px -4px 7px #ffffff;
@@ -115,12 +116,14 @@ color: #f1f1f1;
     margin-top: 0px;
     margin-bottom: 0px;
 }
+
 .info p {
     height: 80%;
     margin-top: 0px;
     margin-bottom: 0px;
+    padding-left: 10px;
+    padding-right: 10px;
     font-size: 1.15rem;
-    color: var(--prog);
 }
 
 .moving {
@@ -165,8 +168,6 @@ color: #f1f1f1;
 .prog {
     margin-top: 3vh;
     height: 10vh;
-    /*display: grid;
-    place-items: center;*/
 }
 
 .progress-bar-container {
@@ -204,12 +205,6 @@ color: #f1f1f1;
                 -5px -5px 10px #ffffff;
 }
 
-#seekbar-inner {
-    height: 8px;
-    background: var(--prog);
-    border-radius: 25px;
-}
-
 #audio_player {
     width: 80vw;
 }
@@ -234,8 +229,10 @@ ul {
 }
 
 .button {
-    color: var(--prog);
+    /*color: var(--prog);*/
+    color: var(--black);
     border-radius: 50%;
+    /*border: 2px solid var(--black);*/
     margin: 0 5px;
     display: flex;
     justify-content: center;

@@ -1,9 +1,11 @@
 # mp3PlayerPWA
 A simple PWA acting mp3 player. 
 
+
 ## TODO
-+ barra di ricerca
++ barra di ricerca -> https://www.w3schools.com/howto/howto_css_animated_search.asp
 + conversione in PWA
++ sistemare colore seekbar ?
 
 
 ## EXTRA

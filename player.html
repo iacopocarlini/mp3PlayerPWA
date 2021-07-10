@@ -25,6 +25,8 @@
 
     <div class="header">
 
+        <input type="text" name="search" placeholder="Search.." style="display:none;">
+
         <a href="#" class="button">
             <i id="menu_btn" class="fas fa-bars" aria-hidden="true" onclick="openNav()"></i>
             <span class="sr-only" >menu bar</span>
@@ -37,7 +39,7 @@
         </a>
 
         <a href="#" class="button">
-            <i class="fas fa-search" aria-hidden="true"></i>
+            <i class="fas fa-search" aria-hidden="true" onclick="search()"></i>
             <span class="sr-only">Search</span>
         </a>
         
@@ -51,7 +53,7 @@
 
     <div class="info">
         <h1 id="song_header" style="display: none;"> </h1>
-        <p id="song_title"> Press on the folder button to load your playlist</p>
+        <p id="song_title"> Press the folder button to load your playlist</p>
     </div> <!--  info  -->
     
 
@@ -63,9 +65,6 @@
         </div>
 
         <div class="progress-bar-container">
-            <!-- <div id="seekbar">
-                <div id="seekbar-inner"></div>
-            </div> -->
             <input id="seekbar" type="range" min="0" max="100" value="0" step="1" oninput="goToSelectedTime()">
         </div>
 
@@ -90,7 +89,7 @@
                 <i class="fas fa-step-forward"></i>
                 <span class="sr-only">Next song</span>
             </a>
-            <a href="#" class="button button-sm">
+            <a href="#" id="loop_btn" class="button button-sm">
                 <i class="fas fa-circle-notch fa-sm" aria-hidden="true" onclick="loop()"></i>
                 <span class="sr-only">Repeat song</span>
             </a>
