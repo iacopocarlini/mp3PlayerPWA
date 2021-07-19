@@ -1,15 +1,15 @@
 # mp3PlayerPWA
-A simple PWA acting mp3 player. 
+A simple PWA acting as mp3 player. 
 
 
 ## TODO
-+ barra di ricerca -> https://www.w3schools.com/howto/howto_css_animated_search.asp
++ barra di ricerca Real Time: https://jsfiddle.net/dfsq/7BUmG/1133/
++ fix tasto ricerca (sostituire con audio/muto?)
++ tema chiaro/scuro da bottone
 + conversione in PWA
-+ sistemare colore seekbar ?
 
 
 ## EXTRA
-+ Tema chiaro / scuro da tasto settings
 + pagina sul mio sito portfolio
 
 

@@ -115,9 +115,13 @@ function prepareSongItem(songName, index) {
 
 // Search bar
 
-function search() {
+function toggleDarkMode() {
 
-  // ...
+}
+
+function deleteSearch() {
+
+  document.getElementById("search_bar").value = "";;
 }
 
 // Audio player controls

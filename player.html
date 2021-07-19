@@ -16,30 +16,39 @@
 <div class="player">
 
     <div id="sidenav" class="sidenav">
+
+        <div id="sidenav_buttons">
+            <i class="fa fa-moon-o" aria-hidden="true" onclick="toggleDarkMode()"></i>
+            <i class="fa fa-chevron-left" onclick="closeNav()"></i>
+        </div>
+        
+        <div id="search_bar_container">
+            <input id="search_bar" type="text" name="search" placeholder="Search song...">
+            <i id="close_search_btn" class="fa fa-times" aria-hidden="true" onclick="deleteSearch()"></i>
+            <span class="sr-only">close</span>
+        </div> <!-- search bar-->
+
         <ul id="songsList">
-            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-            <li id="empty_message" class="song_element"> No songs loaded yet </li>
+            <li id="empty_message" class="song_element"> No songs loaded yet...</li>
         </ul>
     </div>
 
 
-    <div class="header">
+    <div id="header">
 
-        <input type="text" name="search" placeholder="Search.." style="display:none;">
-
-        <a href="#" class="button">
+        <a id="menu_area" href="#" class="button">
             <i id="menu_btn" class="fas fa-bars" aria-hidden="true" onclick="openNav()"></i>
             <span class="sr-only" >menu bar</span>
         </a>
         
-        <a href="#" class="button">
+        <a id="folder_area" href="#" class="button">
             <i class="fa fa-folder-open" aria-hidden="true" onclick="openDirectory()"></i>
             <span class="sr-only">Import</span>
          <input style="display:none;" type="file" id="input_picker" webkitdirectory directory multiple onchange="buildPlayList()"/>
         </a>
 
-        <a href="#" class="button">
-            <i class="fas fa-search" aria-hidden="true" onclick="search()"></i>
+        <a id="search_area" href="#" class="button">
+            <i class="fas fa-search" aria-hidden="true" onclick="openNav()"></i>
             <span class="sr-only">Search</span>
         </a>
         

@@ -56,6 +56,11 @@ a {
 color: #f1f1f1;
 }
 
+#sidenav_buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+}
 #songsList {
     border: #333333;
 }
@@ -70,7 +75,7 @@ color: #f1f1f1;
   padding: 10px 10px 5px 5px;
 }
 
-.header {
+#header {
     height: 10vh;
     display: grid;
     grid-template-columns: 1fr 3fr 1fr;
@@ -78,7 +83,7 @@ color: #f1f1f1;
     justify-items: center;
 }
 
-.header > .button {
+#header > .button {
     width: 2rem;
     height: 2rem;
     display: grid;
@@ -89,6 +94,27 @@ color: #f1f1f1;
     box-shadow:  4px 4px 7px #cccccc, 
                  -4px -4px 7px #ffffff;
     border-radius: 6px;
+}
+
+#search_bar_container {
+    height: 10vh;
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+    align-items: center;
+    justify-items: center;
+}
+
+#search_bar {
+    
+    width: 80%;
+    height: 40%;
+    float: left;
+}
+
+#close_search_btn {
+    width: 20%;
+    height: auto;
+    float: right;
 }
 
 .img-container {
