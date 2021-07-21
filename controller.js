@@ -10,17 +10,38 @@ var playList = [];
 var currentIndex = 0;
 var isLoopActive = false;
 var titleIsMoving = false;
+//const event = new Event('keyup');
 
 // DOM Elements
-var audioElement = new Audio();
+
+// Audio player
+const audioElement = new Audio();
 audioElement.addEventListener("ended", nextSong);
 audioElement.addEventListener("timeupdate", updateTimer);
 audioElement.addEventListener("loadedmetadata", updatePlaylistStatus);
 
-var inputElement = document.getElementById("input_picker");
-var seekbar =  document.getElementById("seekbar");
+// File picker
+const inputElement = document.getElementById("input_picker");
+const seekbar =  document.getElementById("seekbar");
 seekbar.addEventListener("onchange", nextSong);
 
+// Search bar
+const searchBar = document.getElementById("search_bar");
+searchBar.addEventListener("keyup", function() { // Real time search inside songsList
+  
+  if (!playListReady())
+    return; 
+
+  var $rows = $('li');
+  var val = '^(?=.*\\b' + $.trim($(this).val()).split(/\s+/).join('\\b)(?=.*\\b') + ').*$',
+        reg = RegExp(val, 'i'),
+        text;
+    
+    $rows.show().filter(function() {
+        text = $(this).text().replace(/\s+/g, ' ');
+        return !reg.test(text);
+    }).hide();
+});
 
 // DOM setup
 
@@ -83,8 +104,10 @@ function getFileExtension(filename) {
 
 function populatePlayListView(songsArray) {
 
-  // hide default message
-  document.getElementById('empty_message').style.display = "none";
+  // hide/delete default message
+  //document.getElementById('empty_message').style.display = "none";
+  const e = document.getElementById('empty_message');
+  e.parentElement.removeChild(e);
 
   // then load songs...
   var list = document.getElementById('songsList');
@@ -94,6 +117,7 @@ function populatePlayListView(songsArray) {
     list.appendChild(item);
   }
 
+   // update rows value for real time search
   openNav(); // show results in sidebar
 }
 
@@ -113,15 +137,16 @@ function prepareSongItem(songName, index) {
 }
 
 
-// Search bar
-
 function toggleDarkMode() {
 
 }
 
 function deleteSearch() {
 
-  document.getElementById("search_bar").value = "";;
+  searchBar.focus();
+  searchBar.value = "";
+
+  // TODO: rimettere tutti i risultati quando viene cancellata la ricerca
 }
 
 // Audio player controls

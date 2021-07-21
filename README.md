@@ -3,7 +3,7 @@ A simple PWA acting as mp3 player.
 
 
 ## TODO
-+ barra di ricerca Real Time: https://jsfiddle.net/dfsq/7BUmG/1133/
++ rimettere tutti i risultati quando viene cancellata la ricerca
 + fix tasto ricerca (sostituire con audio/muto?)
 + tema chiaro/scuro da bottone
 + conversione in PWA
