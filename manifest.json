@@ -1,0 +1,36 @@
+{
+    "short_name": "Music",
+    "name": "PWA based music player",
+    "icons": [
+      {
+        "src": "/img/central_64px.png",
+        "type": "image/png",
+        "sizes": "64x64",
+        "purpose": "any maskable"
+      },
+      {
+        "src": "/img/central_512px.png",
+        "type": "image/png",
+        "sizes": "512x512",
+        "purpose": "any maskable"
+      }
+    ],
+    "start_url": "/?source=pwa",
+    "background_color": "#EBEBEB",
+    "display": "standalone",
+    "scope": "/",
+    "theme_color": "#EBEBEB",
+    "description": "A lightweight music player",
+    "screenshots": [
+      {
+        "src": "/images/screenshot1.png",
+        "type": "image/png",
+        "sizes": "540x720"
+      },
+      {
+        "src": "/images/screenshot2.jpg",
+        "type": "image/jpg",
+        "sizes": "540x720"
+      }
+    ]
+  }

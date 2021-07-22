@@ -8,8 +8,11 @@
     
     <head>
         <link rel="stylesheet" href="style.css">
+        <link rel="manifest" href="/manifest.json">
+        <link rel="apple-touch-icon" href="/img/central_128px.png">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta name="theme-color" content="#EBEBEB"/>
     </head>
 
 <body>
@@ -38,7 +41,7 @@
     <div id="header">
 
         <a id="menu_area" href="#" class="button">
-            <i id="menu_btn" class="fas fa-bars" aria-hidden="true" onclick="openNav()"></i>
+            <i id="menu_btn" class="fas fa-bars" aria-hidden="true" onclick="openNav(false)"></i>
             <span class="sr-only" >menu bar</span>
         </a>
         
@@ -49,7 +52,7 @@
         </a>
 
         <a id="search_area" href="#" class="button">
-            <i class="fas fa-search" aria-hidden="true" onclick="openNav()"></i>
+            <i class="fas fa-search" aria-hidden="true" onclick="openNav(true)"></i>
             <span class="sr-only">Search</span>
         </a>
         

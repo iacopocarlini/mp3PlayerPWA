@@ -3,10 +3,13 @@ A simple PWA acting as mp3 player.
 
 
 ## TODO
-+ rimettere tutti i risultati quando viene cancellata la ricerca
-+ fix tasto ricerca (sostituire con audio/muto?)
+
 + tema chiaro/scuro da bottone
-+ conversione in PWA
++ continuare conversion in PWA
++ aggiungere screenshots nel manifest
++ sistemare eventualmente ultimo errore nel report LightHouse
++ provare ad installare su cellulare
++ sessione di test/debug
 
 
 ## EXTRA

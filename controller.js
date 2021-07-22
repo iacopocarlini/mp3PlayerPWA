@@ -46,26 +46,61 @@ searchBar.addEventListener("keyup", function() { // Real time search inside song
 // DOM setup
 
 var sidenavIsOpen = false;
-document.addEventListener('click', function(event) {
+
+// Event listener: close sidenav if users taps outside
+/*document.addEventListener('click', function(event) {
   
   if (!(document.getElementById("sidenav").contains(event.target)) 
       && !(document.getElementById("menu_btn").contains(event.target)) 
       && sidenavIsOpen)
     closeNav();
+});*/
+
+
+// Window listeners
+window.addEventListener('beforeinstallprompt', (e) => {
+  // Prevent the mini-infobar from appearing on mobile
+  e.preventDefault();
+  // Stash the event so it can be triggered later.
+  //deferredPrompt = e;
+  // Update UI notify the user they can install the PWA
+  //showInstallPromotion();
+  // Optionally, send analytics event that PWA install promo was shown.
+  console.log(`'beforeinstallprompt' event was fired.`);
+});
+
+window.addEventListener('appinstalled', () => {
+  // Hide the app-provided install promotion
+  hideInstallPromotion();
+  // Clear the deferredPrompt so it can be garbage collected
+  deferredPrompt = null;
+  // Optionally, send analytics event to indicate successful install
+  console.log('PWA was installed');
 });
 
 // End of globals
 
 // Side navigation menu
 
-function openNav() {
-    document.getElementById("sidenav").style.width = "70vw";
-    sidenavIsOpen = true;
+function openNav(searchFocused) {
+  
+  if (searchFocused)
+    searchBar.focus();
+
+  if (sidenavIsOpen) // already open
+    return;
+  
+  document.getElementById("sidenav").style.width = "70vw";
+  sidenavIsOpen = true;
 }
   
 function closeNav() {
-    document.getElementById("sidenav").style.width = "0";
-    sidenavIsOpen = false;
+
+  if (!sidenavIsOpen) // already closed
+    return;
+
+  document.getElementById("sidenav").style.width = "0";
+  sidenavIsOpen = false;
 }
 
 // End side navigation menu
@@ -145,7 +180,8 @@ function deleteSearch() {
 
   searchBar.focus();
   searchBar.value = "";
-
+  var $rows = $('li');
+  $rows.show();
   // TODO: rimettere tutti i risultati quando viene cancellata la ricerca
 }
 
