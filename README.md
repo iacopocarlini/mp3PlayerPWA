@@ -5,10 +5,10 @@ A simple PWA acting as mp3 player.
 ## TODO
 
 + tema chiaro/scuro da bottone
-+ continuare conversion in PWA
++ continuare conversione in PWA
 + aggiungere screenshots nel manifest
 + sistemare eventualmente ultimo errore nel report LightHouse
-+ provare ad installare su cellulare
++ provare ad installare su cellulare (ref:NB: Firewall blocks access of your computer along network so you need to turn off firewall for the network if either public or private)
 + sessione di test/debug
 
 
