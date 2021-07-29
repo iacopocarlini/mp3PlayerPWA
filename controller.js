@@ -71,7 +71,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
 
 window.addEventListener('appinstalled', () => {
   // Hide the app-provided install promotion
-  hideInstallPromotion();
+  //hideInstallPromotion();
   // Clear the deferredPrompt so it can be garbage collected
   deferredPrompt = null;
   // Optionally, send analytics event to indicate successful install
@@ -387,4 +387,10 @@ async function verifyPermission(dirHandle, readWrite) {
 
 function playTest() {
   playSong(0);
+}
+
+function webkitdirectorySupported(){
+  alert('webkitdirectory' in document.createElement('input'));
+  alert('directory' in document.createElement('input'));
+  alert('multiple' in document.createElement('input'));
 }
